@@ -64,7 +64,7 @@ void SymbolData::writeNocashSym()
 			NocashSymEntry entry;
 			entry.address = sym.address;
 
-			if (size != 0 && nocashSymVersion >= 2)
+			if (size != 0 && nocashSymVersion == 2)
 				entry.text = tfm::format(L"%s,%08X",sym.name,size);
 			else
 				entry.text = sym.name;

@@ -17,6 +17,7 @@ static void printUsage(std::wstring executableName)
 	Logger::printLine(L" -temp <TEMP>              Output temporary assembly data to <TEMP> file");
 	Logger::printLine(L" -sym  <SYM>               Output symbol data in the sym format to <SYM> file");
 	Logger::printLine(L" -sym2 <SYM2>              Output symbol data in the sym2 format to <SYM2> file");
+	Logger::printLine(L" -sym3 <SYM3>              Output symbol data in the sym3 format to <SYM3> file");
 	Logger::printLine(L" -root <ROOT>              Use <ROOT> as working directory during execution");
 	Logger::printLine(L" -equ  <NAME> <VAL>        Equivalent to \'<NAME> equ <VAL>\' in code");
 	Logger::printLine(L" -strequ <NAME> <VAL>      Equivalent to \'<NAME> equ \"<VAL>\"\' in code");
@@ -56,6 +57,12 @@ static bool parseArguments(const std::vector<std::wstring>& arguments, ArmipsArg
 			{
 				settings.symFileName = arguments[argpos + 1];
 				settings.symFileVersion = 2;
+				argpos += 2;
+			}
+			else if (arguments[argpos] == L"-sym3" && argpos + 1 < arguments.size())
+			{
+				settings.symFileName = arguments[argpos + 1];
+				settings.symFileVersion = 3;
 				argpos += 2;
 			}
 			else if (arguments[argpos] == L"-erroronwarning")
