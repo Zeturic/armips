@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Util/FileSystem.h"
+#include "Util/SymbolFileCaseMode.h"
 
 #include <memory>
 #include <string>
@@ -31,7 +32,8 @@ struct ArmipsArguments
 {
 	// common
 	ArmipsMode mode;
-	int symFileVersion;
+	SymbolFileCaseMode symFileCaseMode;
+	bool symFileIncludeSizes;
 	bool errorOnWarning;
 	bool silent;
 	bool showStats;
@@ -52,7 +54,8 @@ struct ArmipsArguments
 	ArmipsArguments()
 	{
 		mode = ArmipsMode::FILE;
-		symFileVersion = 0;
+		symFileIncludeSizes = false;
+		symFileCaseMode = SymbolFileCaseMode::PRESERVE;
 		errorOnWarning = false;
 		silent = false;
 		showStats = false;

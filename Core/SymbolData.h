@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Util/FileSystem.h"
+#include "Util/SymbolFileCaseMode.h"
 
 #include <cstdint>
 #include <set>
@@ -81,7 +82,7 @@ public:
 
 	SymbolData();
 	void clear();
-	void setNocashSymFileName(const fs::path& name, int version) { nocashSymFileName = name; nocashSymVersion = version; };
+	void setNocashSymFileName(const fs::path& name, SymbolFileCaseMode caseMode, bool includeSizes) { nocashSymFileName = name; nocashSymCaseMode = caseMode; nocashSymIncludeSizes = includeSizes; };
 	void write();
 	void setEnabled(bool b) { enabled = b; };
 
@@ -97,7 +98,8 @@ private:
 
 	fs::path nocashSymFileName;
 	bool enabled;
-	int nocashSymVersion;
+	SymbolFileCaseMode nocashSymCaseMode;
+	bool nocashSymIncludeSizes;
 
 	// entry 0 is for data without parent modules
 	std::vector<SymDataModule> modules;

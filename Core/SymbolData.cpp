@@ -64,13 +64,22 @@ void SymbolData::writeNocashSym()
 			NocashSymEntry entry;
 			entry.address = sym.address;
 
-			if (size != 0 && nocashSymVersion >= 2)
+			if (size != 0 && nocashSymIncludeSizes)
 				entry.text = tfm::format(L"%s,%08X",sym.name,size);
 			else
 				entry.text = sym.name;
 
-			if (nocashSymVersion == 1)
-				std::transform(entry.text.begin(), entry.text.end(), entry.text.begin(), ::towlower);
+			switch (nocashSymCaseMode)
+			{
+			case SymbolFileCaseMode::LOWER:
+				std::transform(entry.text.begin(), entry.text.end(), entry.text.begin(), ::towlower);					std::transform(entry.text.begin(), entry.text.end(), entry.text.begin(), ::towlower);
+				break;
+			case SymbolFileCaseMode::UPPER:
+				std::transform(entry.text.begin(), entry.text.end(), entry.text.begin(), ::towupper);
+				break;
+			case SymbolFileCaseMode::PRESERVE:
+				break;
+			}
 
 			entries.push_back(entry);
 		}

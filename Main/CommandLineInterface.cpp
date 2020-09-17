@@ -17,6 +17,7 @@ static void printUsage(std::wstring executableName)
 	Logger::printLine(L" -temp <TEMP>              Output temporary assembly data to <TEMP> file");
 	Logger::printLine(L" -sym  <SYM>               Output symbol data in the sym format to <SYM> file");
 	Logger::printLine(L" -sym2 <SYM2>              Output symbol data in the sym2 format to <SYM2> file");
+	Logger::printLine(L" -symcase <OPTION>         Adjust case of symbols output by -sym or -sym2");
 	Logger::printLine(L" -root <ROOT>              Use <ROOT> as working directory during execution");
 	Logger::printLine(L" -equ  <NAME> <VAL>        Equivalent to \'<NAME> equ <VAL>\' in code");
 	Logger::printLine(L" -strequ <NAME> <VAL>      Equivalent to \'<NAME> equ \"<VAL>\"\' in code");
@@ -49,13 +50,30 @@ static bool parseArguments(const std::vector<std::wstring>& arguments, ArmipsArg
 			else if (arguments[argpos] == L"-sym" && argpos + 1 < arguments.size())
 			{
 				settings.symFileName = arguments[argpos + 1];
-				settings.symFileVersion = 1;
+				settings.symFileIncludeSizes = false;
+				settings.symFileCaseMode = SymbolFileCaseMode::LOWER;
 				argpos += 2;
 			}
 			else if (arguments[argpos] == L"-sym2" && argpos + 1 < arguments.size())
 			{
 				settings.symFileName = arguments[argpos + 1];
-				settings.symFileVersion = 2;
+				settings.symFileIncludeSizes = true;
+				settings.symFileCaseMode = SymbolFileCaseMode::PRESERVE;
+				argpos += 2;
+			}
+			else if (arguments[argpos] == L"-symcase" && argpos + 1 < arguments.size())
+			{
+				if (arguments[argpos+1] == L"preserve")
+					settings.symFileCaseMode = SymbolFileCaseMode::PRESERVE;
+				else if (arguments[argpos+1] == L"lower")
+					settings.symFileCaseMode = SymbolFileCaseMode::LOWER;
+				else if (arguments[argpos+1] == L"upper")
+					settings.symFileCaseMode = SymbolFileCaseMode::UPPER;
+				else
+				{
+					Logger::printError(Logger::Error, L"-symcase argument must be one of \"preserve\", \"lower\", or \"upper\"; got \"%s\"", arguments[argpos+1]);
+					return false;
+				}
 				argpos += 2;
 			}
 			else if (arguments[argpos] == L"-erroronwarning")

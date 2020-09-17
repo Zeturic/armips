@@ -50,6 +50,17 @@ Specifies the output name for symbol data in the sym2 format. This format is sup
 80240000 NewBlock,00000014
 ```
 
+#### `-symcase <option>`
+Adjusts the case of symbols output by `-sym` and `-sym2`. Supports `preserve`, `lower`, and `upper`. Example output combining `-sym` and `-symcase preserve`:
+
+```
+00000000 0
+80000000 .dbl:0010
+80000010 Main
+8000002C Subroutine
+80240000 NewBlock
+```
+
 #### `-erroronwarning`
 Specifies that any warnings shall be treated like errors, preventing assembling. This has the same effect as the `.erroronwarning` directive.
 

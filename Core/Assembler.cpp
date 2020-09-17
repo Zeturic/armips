@@ -168,7 +168,7 @@ bool runArmips(ArmipsArguments& settings)
 	Logger::setErrorOnWarning(settings.errorOnWarning);
 
 	if (!settings.symFileName.empty())
-		symData.setNocashSymFileName(settings.symFileName, settings.symFileVersion);
+		symData.setNocashSymFileName(settings.symFileName, settings.symFileCaseMode, settings.symFileIncludeSizes);
 
 	if (!settings.tempFileName.empty())
 		tempData.setFileName(settings.tempFileName);
