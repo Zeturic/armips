@@ -1,0 +1,4 @@
+Underflow.asm(4) error: Area at 00000000 underflowed by 16 bytes
+Underflow.asm(9) error: Area at 00000010 underflowed by 16 bytes
+Underflow.asm(15) error: Area at 00000020 underflowed by 16 bytes
+Underflow.asm(14) error: Area at 00000020 underflowed by 16 bytes

@@ -452,7 +452,8 @@ std::unique_ptr<CAssemblerCommand> parseDirectiveArea(Parser& parser, int flags)
 		return nullptr;
 
 	bool shared = (flags & DIRECTIVE_AREA_SHARED) != 0;
-	auto area = std::make_unique<CDirectiveArea>(shared, parameters[0]);
+	bool strict = (flags & DIRECTIVE_AREA_STRICT) != 0;
+	auto area = std::make_unique<CDirectiveArea>(strict, shared, parameters[0]);
 	if (parameters.size() == 2)
 		area->setFillExpression(parameters[1]);
 
@@ -470,7 +471,7 @@ std::unique_ptr<CAssemblerCommand> parseDirectiveDefineArea(Parser& parser, int 
 		return nullptr;
 
 	bool shared = (flags & DIRECTIVE_AREA_SHARED) != 0;
-	auto area = std::make_unique<CDirectiveArea>(shared, parameters[1]);
+	auto area = std::make_unique<CDirectiveArea>(false, shared, parameters[1]);
 	area->setPositionExpression(parameters[0]);
 	if (parameters.size() == 3)
 		area->setFillExpression(parameters[2]);
@@ -775,8 +776,9 @@ const DirectiveMap directives = {
 	{ L".3ds",				{ &parseDirectiveArmArch,			DIRECTIVE_ARM_3DS } },
 	{ L".arm.big",			{ &parseDirectiveArmArch,			DIRECTIVE_ARM_BIG } },
 	{ L".arm.little",		{ &parseDirectiveArmArch,			DIRECTIVE_ARM_LITTLE } },
-	
+
 	{ L".area",				{ &parseDirectiveArea,				0 } },
+	{ L".strictarea",		{ &parseDirectiveArea,				DIRECTIVE_AREA_STRICT } },
 	{ L".autoregion",		{ &parseDirectiveAutoRegion,		0 } },
 	{ L".region",			{ &parseDirectiveArea,				DIRECTIVE_AREA_SHARED } },
 	{ L".defineregion",		{ &parseDirectiveDefineArea,		DIRECTIVE_AREA_SHARED } },

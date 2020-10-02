@@ -376,6 +376,18 @@ Optionally, a second parameter can be given. The remaining free size of the area
 .endarea
 ```
 
+### Strict Areas
+
+Strict areas are areas in which the data must exactly match the specified size.
+
+```
+.strictarea 2
+.byte 1
+.endarea
+```
+
+This would cause an error on assembling, because the byte directive only takes up 1 byte, instead of the 2 that the strict area must have.
+
 ### Regions
 
 To help manage allocating new data in existing space, you can use `.region` and `.autoregion` for armips to automatically find an area with enough space.

@@ -10,13 +10,14 @@
 #include <algorithm>
 #include <cstring>
 
-CDirectiveArea::CDirectiveArea(bool shared, Expression& size)
+CDirectiveArea::CDirectiveArea(bool strict, bool shared, Expression& size)
 {
 	this->areaSize = 0;
 	this->contentSize = 0;
 	this->position = 0;
 	this->fillValue = 0;
 
+	this->strict = strict;
 	this->shared = shared;
 	this->sizeExpression = size;
 	this->content = nullptr;
@@ -89,6 +90,11 @@ bool CDirectiveArea::Validate(const ValidateState &state)
 	if (areaSize < contentSize)
 	{
 		Logger::queueError(Logger::Error, L"Area at %08x overflowed by %d bytes", position, contentSize - areaSize);
+	}
+
+	if (strict && areaSize > contentSize)
+	{
+		Logger::queueError(Logger::Error, L"Area at %08x underflowed by %d bytes", position, areaSize - contentSize);
 	}
 
 	if (fillExpression.isLoaded() || shared)

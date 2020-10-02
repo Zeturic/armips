@@ -6,7 +6,7 @@
 class CDirectiveArea: public CAssemblerCommand
 {
 public:
-	CDirectiveArea(bool shared, Expression& size);
+	CDirectiveArea(bool strict, bool shared, Expression& size);
 	bool Validate(const ValidateState &state) override;
 	void Encode() const override;
 	void writeTempData(TempData& tempData) const override;
@@ -15,6 +15,7 @@ public:
 	void setPositionExpression(Expression& exp);
 	void setContent(std::unique_ptr<CAssemblerCommand> content) { this->content = std::move(content); }
 private:
+	bool strict;
 	bool shared;
 	int64_t position;
 	Expression sizeExpression;

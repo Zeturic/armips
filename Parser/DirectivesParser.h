@@ -70,5 +70,6 @@ using DirectiveMap = std::unordered_multimap<std::wstring, const DirectiveEntry>
 
 // Area directive flags
 #define DIRECTIVE_AREA_SHARED		0x00000001
+#define DIRECTIVE_AREA_STRICT		0x00000002
 
 extern const DirectiveMap directives;
