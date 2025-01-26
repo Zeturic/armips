@@ -618,7 +618,7 @@ std::unique_ptr<CAssemblerCommand> parseDirectiveSym(Parser& parser, int flags)
 		return nullptr;
 }
 
-std::unique_ptr<CAssemblerCommand> parseDirectiveDefineLabel(Parser& parser, int flags)
+std::unique_ptr<CAssemblerCommand> parseDirectiveDefineLabel(Parser& parser, int flags, ArmInfoMode armInfoMode)
 {
 	const Token& tok = parser.nextToken();
 	if (tok.type != TokenType::Identifier)
@@ -638,7 +638,17 @@ std::unique_ptr<CAssemblerCommand> parseDirectiveDefineLabel(Parser& parser, int
 		return nullptr;
 	}
 
-	return std::make_unique<CAssemblerLabel>(identifier,Identifier(tok.getOriginalText()),value);
+	return std::make_unique<CAssemblerLabel>(identifier,Identifier(tok.getOriginalText()),value, armInfoMode);
+}
+
+std::unique_ptr<CAssemblerCommand> parseDirectiveDefineLabel(Parser& parser, int flags)
+{
+	return parseDirectiveDefineLabel(parser, flags, ArmInfoMode::AUTO);
+}
+
+std::unique_ptr<CAssemblerCommand> parseDirectiveDefineObject(Parser& parser, int flags)
+{
+	return parseDirectiveDefineLabel(parser, flags, ArmInfoMode::ARM);
 }
 
 std::unique_ptr<CAssemblerCommand> parseDirectiveFunction(Parser& parser, int flags)
@@ -832,6 +842,11 @@ const DirectiveMap directives = {
 	{ ".sym",             { &parseDirectiveSym,             0 } },
 
 	{ ".definelabel",     { &parseDirectiveDefineLabel,     0 } },
+	{ ".definefunction",     { &parseDirectiveDefineLabel,     0 } },
+	{ ".definefunc",     { &parseDirectiveDefineLabel,     0 } },
+	{ ".defineobject",     { &parseDirectiveDefineObject,     0 } },
+	{ ".defineobj",     { &parseDirectiveDefineObject,     0 } },
+
 	{ ".function",        { &parseDirectiveFunction,        DIRECTIVE_MANUALSEPARATOR } },
 	{ ".func",            { &parseDirectiveFunction,        DIRECTIVE_MANUALSEPARATOR } },
 
