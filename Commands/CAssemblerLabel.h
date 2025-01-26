@@ -4,6 +4,8 @@
 #include "Core/Expression.h"
 #include "Core/Types.h"
 
+enum class ArmInfoMode {AUTO, ARM, THUMB};
+
 class Label;
 
 class CAssemblerLabel: public CAssemblerCommand
@@ -11,6 +13,8 @@ class CAssemblerLabel: public CAssemblerCommand
 public:
 	CAssemblerLabel(const Identifier& name, const Identifier& originalName);
 	CAssemblerLabel(const Identifier& name, const Identifier& originalName, Expression& value);
+	CAssemblerLabel(const Identifier& name, const Identifier& originalName, ArmInfoMode armInfoMode);
+	CAssemblerLabel(const Identifier& name, const Identifier& originalName, Expression& value, ArmInfoMode armInfoMode);
 	bool Validate(const ValidateState &state) override;
 	void Encode() const override;
 	void writeTempData(TempData& tempData) const override;
