@@ -3,6 +3,7 @@
 #include "Archs/ARM/Arm.h"
 #include "Archs/ARM/CArmInstruction.h"
 #include "Archs/ARM/CThumbInstruction.h"
+#include "Commands/CAssemblerLabel.h"
 #include "Commands/CDirectiveFile.h"
 #include "Commands/CommandSequence.h"
 #include "Core/Common.h"
@@ -56,6 +57,16 @@ std::unique_ptr<CAssemblerCommand> parseDirectivePool(Parser& parser, int flags)
 	return seq;
 }
 
+std::unique_ptr<CAssemblerCommand> parseDirectiveDefineArmFunction(Parser& parser, int flags)
+{
+	return parseDirectiveDefineLabel(parser, flags, ArmInfoMode::ARM);
+}
+
+std::unique_ptr<CAssemblerCommand> parseDirectiveDefineThumbFunction(Parser& parser, int flags)
+{
+	return parseDirectiveDefineLabel(parser, flags, ArmInfoMode::THUMB);
+}
+
 const char* msgTemplate = R"(
 	mov    r12,r12
 	b      %after%
@@ -89,6 +100,11 @@ const DirectiveMap armDirectives = {
 	{ ".arm",		{ &parseDirectiveArm,	0 } },
 	{ ".pool",		{ &parseDirectivePool,	0 } },
 	{ ".msg",		{ &parseDirectiveMsg,	0 } },
+
+	{ ".definearmfunction",     { &parseDirectiveDefineArmFunction,     0 } },
+	{ ".definearmfunc",     { &parseDirectiveDefineArmFunction,     0 } },
+	{ ".definethumbfunction",     { &parseDirectiveDefineThumbFunction,     0 } },
+	{ ".definethumbfunc",     { &parseDirectiveDefineThumbFunction,     0 } },
 };
 
 std::unique_ptr<CAssemblerCommand> ArmParser::parseDirective(Parser& parser)
